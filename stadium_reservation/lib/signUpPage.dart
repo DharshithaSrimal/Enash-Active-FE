@@ -8,7 +8,21 @@ void main() => runApp(
   ),
 );
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  String errorMessage = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +33,11 @@ class SignUpPage extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
-                colors: [Colors.black, Colors.grey.shade900, Colors.grey.shade800],
+                colors: [
+                  Colors.black,
+                  Colors.grey.shade900,
+                  Colors.grey.shade800
+                ],
               ),
             ),
             child: Column(
@@ -34,7 +52,7 @@ class SignUpPage extends StatelessWidget {
                       children: <Widget>[
                         FadeInUp(
                           child: RichText(
-                            text: const TextSpan(
+                            text: TextSpan(
                               children: [
                                 TextSpan(
                                   text: "ENASH ",
@@ -90,22 +108,38 @@ class SignUpPage extends StatelessWidget {
                                   color: Color.fromRGBO(225, 95, 27, .3),
                                   blurRadius: 20,
                                   offset: Offset(0, 10),
-                                ),
+                                )
                               ],
                             ),
                             child: Column(
                               children: <Widget>[
-                                buildTextField("First Name"),
+                                buildTextField(
+                                  "First Name",
+                                  firstNameController,
+                                ),
                                 SizedBox(height: 10),
-                                buildTextField("Last Name"),
+                                buildTextField(
+                                  "Last Name",
+                                  lastNameController,
+                                ),
                                 SizedBox(height: 10),
-                                buildTextField("Mobile Number"),
+                                buildTextField(
+                                  "Mobile Number",
+                                  mobileNumberController,
+                                ),
                                 SizedBox(height: 10),
-                                buildTextField("Email"),
+                                buildTextField("Email", emailController),
                                 SizedBox(height: 10),
-                                buildTextField("Username"),
+                                buildTextField(
+                                  "Username",
+                                  usernameController,
+                                ),
                                 SizedBox(height: 10),
-                                buildTextField("Password", isPassword: true),
+                                buildTextField(
+                                  "Password",
+                                  passwordController,
+                                  isPassword: true,
+                                ),
                               ],
                             ),
                           ),
@@ -116,7 +150,16 @@ class SignUpPage extends StatelessWidget {
                         FadeInUp(
                           duration: Duration(milliseconds: 1500),
                           child: MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (validateForm()) {
+                                // All fields are filled, proceed with your logic
+                                print('Form is valid');
+                                clearErrorMessage();
+                              } else {
+                                // Display an error message
+                                setErrorMessage('Please fill in all fields');
+                              }
+                            },
                             height: 50,
                             color: Color.fromARGB(255, 1, 157, 223),
                             shape: RoundedRectangleBorder(
@@ -136,6 +179,14 @@ class SignUpPage extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
+                        if (errorMessage.isNotEmpty)
+                          Text(
+                            errorMessage,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -148,7 +199,20 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
-  Widget buildTextField(String hintText, {bool isPassword = false}) {
+  bool validateForm() {
+    return firstNameController.text.isNotEmpty &&
+        lastNameController.text.isNotEmpty &&
+        mobileNumberController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        usernameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
+  }
+
+  Widget buildTextField(
+      String hintText,
+      TextEditingController controller, {
+        bool isPassword = false,
+      }) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -156,7 +220,12 @@ class SignUpPage extends StatelessWidget {
         border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
       ),
       child: TextField(
+        controller: controller,
         obscureText: isPassword,
+        onChanged: (value) {
+          // Clear the error message when any field changes
+          clearErrorMessage();
+        },
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey),
@@ -164,5 +233,17 @@ class SignUpPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void setErrorMessage(String message) {
+    setState(() {
+      errorMessage = message;
+    });
+  }
+
+  void clearErrorMessage() {
+    setState(() {
+      errorMessage = '';
+    });
   }
 }
