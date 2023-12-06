@@ -56,12 +56,10 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                    topRight: Radius.circular(60),
-                  ),
-                ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                        topRight: Radius.circular(60))),
                 child: Padding(
                   padding: EdgeInsets.all(30),
                   child: Column(
@@ -71,37 +69,34 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromRGBO(225, 95, 27, .3),
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
-                            )
-                          ],
-                        ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color.fromRGBO(225, 95, 27, .3),
+                                  blurRadius: 20,
+                                  offset: Offset(0, 10))
+                            ]),
                         child: Column(
                           children: <Widget>[
                             buildDropdownButton(
                               "Sport Type",
                               sportsTypes,
                               selectedSportType,
-                                  (String? value) {
+                              (String? value) {
                                 setState(() {
                                   selectedSportType = value;
                                 });
                               },
                             ),
                             SizedBox(height: 10),
-                            buildTextFormField(
-                                "Calendar", _calendarController),
+                            buildTextFormField("Calendar", _calendarController),
                             SizedBox(height: 10),
                             buildDropdownButton(
                               "District",
                               districts,
                               selectedDistrict,
-                                  (String? value) {
+                              (String? value) {
                                 setState(() {
                                   selectedDistrict = value;
                                 });
@@ -112,7 +107,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                               "City",
                               cities,
                               selectedCity,
-                                  (String? value) {
+                              (String? value) {
                                 setState(() {
                                   selectedCity = value;
                                 });
@@ -124,14 +119,6 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        "Featured Stadiums",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 10),
                       buildFeaturedStadiumsSlider(),
                       SizedBox(
                         height: 20,
@@ -149,9 +136,8 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                           child: Text(
                             "Show Available Stadiums",
                             style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -162,7 +148,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
@@ -200,8 +186,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     );
   }
 
-  Widget buildTextFormField(
-      String hintText, TextEditingController controller) {
+  Widget buildTextFormField(String hintText, TextEditingController controller) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 8),
@@ -222,22 +207,57 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
   }
 
   Widget buildFeaturedStadiumsSlider() {
+    List<String> stadiumNames = ['Stadium 1', 'Stadium 2', 'Stadium 3'];
+
     return CarouselSlider(
       items: [
-        'assets/stadium1.jpg',
-        'assets/stadium2.jpg',
-        'assets/stadium3.jpg',
-      ].map((String imagePath) {
+        'https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YmFkbWludG9uJTIwY291cnR8ZW58MHx8MHx8fDA%3D',
+        'https://images.unsplash.com/photo-1611630483685-472d017cbb4f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1626926938421-90124a4b83fa?q=80&w=1951&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      ].map((String imageUrl) {
+        String stadiumName = stadiumNames.removeAt(0);
+
         return Builder(
           builder: (BuildContext context) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 5.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
-                  image: AssetImage(imagePath),
-                  fit: BoxFit.cover,
+            return GestureDetector(
+              onTap: () {
+                _navigateToStadiumPage(stadiumName);
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        image: DecorationImage(
+                          image: NetworkImage(imageUrl),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 8.0,
+                      left: 8.0,
+                      right: 8.0,
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Text(
+                          stadiumName,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -288,6 +308,11 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
         );
       },
     );
+  }
+
+  void _navigateToStadiumPage(String stadiumName) {
+    print("Navigate to $stadiumName page");
+    // Implement your navigation logic here
   }
 
   List<String> sportsTypes = ['Badminton', 'Basketball', 'Tennis', 'Indoor Cricket'];
