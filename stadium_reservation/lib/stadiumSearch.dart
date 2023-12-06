@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -55,10 +56,12 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
-                        topRight: Radius.circular(60))),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(60),
+                    topRight: Radius.circular(60),
+                  ),
+                ),
                 child: Padding(
                   padding: EdgeInsets.all(30),
                   child: Column(
@@ -68,34 +71,37 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color.fromRGBO(225, 95, 27, .3),
-                                  blurRadius: 20,
-                                  offset: Offset(0, 10))
-                            ]),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromRGBO(225, 95, 27, .3),
+                              blurRadius: 20,
+                              offset: Offset(0, 10),
+                            )
+                          ],
+                        ),
                         child: Column(
                           children: <Widget>[
                             buildDropdownButton(
                               "Sport Type",
                               sportsTypes,
                               selectedSportType,
-                              (String? value) {
+                                  (String? value) {
                                 setState(() {
                                   selectedSportType = value;
                                 });
                               },
                             ),
                             SizedBox(height: 10),
-                            buildTextFormField("Calendar", _calendarController),
+                            buildTextFormField(
+                                "Calendar", _calendarController),
                             SizedBox(height: 10),
                             buildDropdownButton(
                               "District",
                               districts,
                               selectedDistrict,
-                              (String? value) {
+                                  (String? value) {
                                 setState(() {
                                   selectedDistrict = value;
                                 });
@@ -106,7 +112,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                               "City",
                               cities,
                               selectedCity,
-                              (String? value) {
+                                  (String? value) {
                                 setState(() {
                                   selectedCity = value;
                                 });
@@ -115,6 +121,18 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "Featured Stadiums",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      buildFeaturedStadiumsSlider(),
                       SizedBox(
                         height: 20,
                       ),
@@ -131,8 +149,9 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                           child: Text(
                             "Show Available Stadiums",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -143,7 +162,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -181,7 +200,8 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     );
   }
 
-  Widget buildTextFormField(String hintText, TextEditingController controller) {
+  Widget buildTextFormField(
+      String hintText, TextEditingController controller) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 8),
@@ -201,6 +221,38 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     );
   }
 
+  Widget buildFeaturedStadiumsSlider() {
+    return CarouselSlider(
+      items: [
+        'assets/stadium1.jpg',
+        'assets/stadium2.jpg',
+        'assets/stadium3.jpg',
+      ].map((String imagePath) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(
+                  image: AssetImage(imagePath),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          },
+        );
+      }).toList(),
+      options: CarouselOptions(
+        height: 200.0,
+        enlargeCenterPage: true,
+        autoPlay: true,
+        aspectRatio: 16 / 9,
+      ),
+    );
+  }
+
   void _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -212,7 +264,8 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     if (pickedDate != null && pickedDate != selectedDate) {
       setState(() {
         selectedDate = pickedDate;
-        _calendarController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+        _calendarController.text =
+            DateFormat('yyyy-MM-dd').format(pickedDate);
       });
     }
   }
@@ -222,7 +275,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Available Stadiumz"),
+          title: Text("Available Stadiums"),
           content: Text("Display the list of available stadiums here."),
           actions: [
             TextButton(
@@ -237,7 +290,6 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     );
   }
 
-  // Sample data for dropdowns
   List<String> sportsTypes = ['Badminton', 'Basketball', 'Tennis', 'Indoor Cricket'];
   List<String> districts = ['Colombo', 'Kandy', 'Galle'];
   List<String> cities = ['City A', 'City B', 'City C'];
