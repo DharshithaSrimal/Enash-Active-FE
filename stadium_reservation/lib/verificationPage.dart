@@ -188,7 +188,7 @@ class VerificationPage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Account Created Successfully"),
+          title: const Text("Account Created Successfully"),
           actions: [
             TextButton(
               onPressed: () {
@@ -197,7 +197,7 @@ class VerificationPage extends StatelessWidget {
               child: Container(
                 color: Colors.blue,
                 padding: EdgeInsets.all(8.0),
-                child: Text(
+                child: const Text(
                   "Login",
                   style: TextStyle(color: Colors.white),
                 ),
