@@ -25,7 +25,7 @@ class StadiumInfoPage extends StatefulWidget {
 }
 
 class _StadiumInfoPageState extends State<StadiumInfoPage> {
-  // Replace this URL with your Spring Boot backend endpoint
+  // Replace this URL with Spring Boot backend endpoint
   final String backendUrl = 'http://localhost:8080/api/stadium';
 
   // Function to fetch stadium information from the backend
