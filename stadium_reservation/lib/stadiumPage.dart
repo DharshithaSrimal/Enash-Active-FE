@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stadium_reservation/ConfirmBooking.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -19,7 +18,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class StadiumInfoPage extends StatelessWidget {
+class StadiumInfoPage extends StatefulWidget {
+  @override
+  _StadiumInfoPageState createState() => _StadiumInfoPageState();
+}
+
+class _StadiumInfoPageState extends State<StadiumInfoPage> {
+  List<bool> _selections = [false, false];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +38,7 @@ class StadiumInfoPage extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-            'https://sportsvenuecalculator.com/wp-content/uploads/2022/06/2-1.jpg',
+                    'https://sportsvenuecalculator.com/wp-content/uploads/2022/06/2-1.jpg',
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -122,28 +128,57 @@ class StadiumInfoPage extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             // Reserve Button
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to ConfirmBookingPage when Reserve button is pressed
-                _navigateToConfirmBookingPage(context);
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(
-                  'Reserve',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                  ),
-                ),
-              ),
-            ),
+// Reserve Button
+SizedBox(height: 16.0),
+
+// Selectable Booking Type
+ToggleButtons(
+  children: [
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text('Recurring Booking'),
+    ),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text('One-Time Booking'),
+    ),
+  ],
+  isSelected: _selections,
+  onPressed: (int index) {
+    setState(() {
+      // Deselect all buttons
+      for (int i = 0; i < _selections.length; i++) {
+        _selections[i] = i == index;
+      }
+    });
+  },
+),
+
+SizedBox(height: 16.0),
+
+// Reserve Button
+ElevatedButton(
+  onPressed: () {
+    // Navigate to ConfirmBookingPage when Reserve button is pressed
+    _navigateToConfirmBookingPage(context);
+  },
+  style: ElevatedButton.styleFrom(
+    primary: Colors.blue,
+    onPrimary: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.all(12.0),
+    child: Text(
+      'Reserve',
+      style: TextStyle(
+        fontSize: 18.0,
+      ),
+    ),
+  ),
+),
           ],
         ),
       ),
