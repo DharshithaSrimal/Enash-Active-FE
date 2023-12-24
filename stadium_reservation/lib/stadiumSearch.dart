@@ -41,9 +41,11 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                colors: [Colors.black, Colors.grey.shade900, Colors.grey.shade800])),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: [Colors.black, Colors.grey.shade900, Colors.grey.shade800],
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -69,27 +71,33 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
-                        topRight: Radius.circular(60))),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(60),
+                    topRight: Radius.circular(60),
+                  ),
+                ),
                 child: Padding(
                   padding: EdgeInsets.all(30),
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: 20,
+                        height: 40,  // Adjusted height
                       ),
                       Container(
+                        // Adjusted padding and borderRadius
+                        padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color.fromRGBO(225, 95, 27, .3),
-                                  blurRadius: 20,
-                                  offset: Offset(0, 10))
-                            ]),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromRGBO(225, 95, 27, .3),
+                              blurRadius: 20,
+                              offset: Offset(0, 10),
+                            )
+                          ],
+                        ),
                         child: Column(
                           children: <Widget>[
                             buildDropdownButton(
@@ -102,9 +110,9 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                                 });
                               },
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 20),
                             buildTextFormField("Calendar", _calendarController),
-                            SizedBox(height: 10),
+                            SizedBox(height: 20),
                             buildDropdownButton(
                               "District",
                               districts,
@@ -115,7 +123,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                                 });
                               },
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 20),
                             buildDropdownButton(
                               "City",
                               cities,
@@ -130,32 +138,34 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 30,  // Adjusted height
                       ),
                       buildFeaturedStadiumsSlider(),
                       SizedBox(
-                        height: 20,
+                        height: 30,  // Adjusted height
                       ),
                       MaterialButton(
                         onPressed: () {
                           _navigateToStadiumResultsPage(context);
                         },
-                        height: 50,
+                        height: 60,  // Adjusted height
                         color: Color.fromARGB(255, 1, 157, 223),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(30),  // Adjusted borderRadius
                         ),
                         child: Center(
                           child: Text(
                             "Show Available Stadiums",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,  // Adjusted fontSize
+                            ),
                           ),
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 30,  // Adjusted height
                       ),
                     ],
                   ),
@@ -168,6 +178,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     );
   }
 
+
   Widget buildDropdownButton(
     String hintText,
     List<String> items,
@@ -176,7 +187,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
   ) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.symmetric(vertical: 18),
       padding: EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.grey.shade200))),
