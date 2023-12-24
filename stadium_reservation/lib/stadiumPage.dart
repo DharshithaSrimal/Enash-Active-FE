@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class StadiumInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

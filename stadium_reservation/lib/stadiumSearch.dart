@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:stadium_reservation/searchResults.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -8,6 +9,18 @@ void main() => runApp(
         home: StadiumSearchPage(),
       ),
     );
+
+class Stadium {
+  final String name;
+  final String imageUrl;
+  final String details;
+
+  Stadium({
+    required this.name,
+    required this.imageUrl,
+    required this.details,
+  });
+}
 
 class StadiumSearchPage extends StatefulWidget {
   @override
@@ -34,9 +47,9 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 40),
+            const SizedBox(height: 60),
             const Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(40),
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +138,7 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
                       ),
                       MaterialButton(
                         onPressed: () {
-                          _showAvailableStadiumsDialog(context);
+                          _navigateToStadiumResultsPage(context);
                         },
                         height: 50,
                         color: Color.fromARGB(255, 1, 157, 223),
@@ -315,7 +328,53 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     // Implement your navigation logic here
   }
 
+void _navigateToStadiumResultsPage(BuildContext context) {
+  // Generate sample stadium data
+  List<Stadium> sampleStadiums = generateSampleStadiums();
+
+  // Pass the sample stadium data to StadiumResultsPage
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => StadiumResultsPage(searchResults: [],),
+    ),
+  );
+}
   List<String> sportsTypes = ['Badminton', 'Basketball', 'Tennis', 'Indoor Cricket'];
   List<String> districts = ['Colombo', 'Kandy', 'Galle'];
   List<String> cities = ['City A', 'City B', 'City C'];
+
+  List<Stadium> generateSampleStadiums() {
+    return [
+      Stadium(
+        name: 'Stadium 1',
+        imageUrl:
+            'https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YmFkbWludG9uJTIwY291cnR8ZW58MHx8MHx8fDA%3D',
+        details: 'Details for Stadium 1',
+      ),
+      Stadium(
+        name: 'Stadium 2',
+        imageUrl:
+            'https://images.unsplash.com/photo-1611630483685-472d017cbb4f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        details: 'Details for Stadium 2',
+      ),
+      Stadium(
+        name: 'Stadium 3',
+        imageUrl:
+            'https://images.unsplash.com/photo-1626926938421-90124a4b83fa?q=80&w=1951&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        details: 'Details for Stadium 3',
+      ),
+    ];
+  }
 }
+
+
+
+  void _navigateToStadiumDetailPage(BuildContext context, Stadium stadium) {
+    print("Navigate to ${stadium.name} detail page");
+    // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => StadiumDetailPage(stadium: stadium)));
+  }
+
+
+  
+
