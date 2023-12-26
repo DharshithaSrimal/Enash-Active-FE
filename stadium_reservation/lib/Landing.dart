@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:stadium_reservation/stadiumSearch.dart';
 
 
 void main() => runApp(
@@ -31,7 +32,12 @@ class LandingPage extends StatelessWidget {
             children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Navigate to one-time booking page
+                                              
+                        // Navigate to the search page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => StadiumSearchPage()),
+                        );
                         Navigator.pushNamed(context, '/one_time_booking');
                       },
                       style: ElevatedButton.styleFrom(

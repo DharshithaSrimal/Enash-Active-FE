@@ -123,7 +123,7 @@ class HomePage extends StatelessWidget {
     // Navigate to the search page
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => StadiumSearchPage()),
+      MaterialPageRoute(builder: (context) => LandingPage()),
     );
   },
   height: 50,
