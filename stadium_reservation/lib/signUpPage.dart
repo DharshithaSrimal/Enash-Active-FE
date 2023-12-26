@@ -1,196 +1,54 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-void main() => runApp(
-  MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: SignUpPage(),
-  ),
-);
-
-class SignUpPage extends StatefulWidget {
-  @override
-  _SignUpPageState createState() => _SignUpPageState();
-}
-
-class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController mobileNumberController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  String errorMessage = '';
-
+class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      appBar: AppBar(
+        title: Text('Enash Active'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                colors: [
-                  Colors.black,
-                  Colors.grey.shade900,
-                  Colors.grey.shade800
-                ],
-              ),
+          ElevatedButton(
+            onPressed: () {
+              // Navigate to one-time booking page
+              Navigator.pushNamed(context, '/one_time_booking');
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 16), // Adjust padding as needed
+              textStyle: TextStyle(fontSize: 18),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: 80),
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        FadeInUp(
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "ENASH ",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "ACTIVE",
-                                  style: TextStyle(
-                                    color: Colors.yellow,
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(60),
-                      topRight: Radius.circular(60),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(30),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 40,
-                        ),
-                        FadeInUp(
-                          duration: Duration(milliseconds: 1400),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color.fromRGBO(225, 95, 27, .3),
-                                  blurRadius: 20,
-                                  offset: Offset(0, 10),
-                                )
-                              ],
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                buildTextField(
-                                  "First Name",
-                                  firstNameController,
-                                ),
-                                SizedBox(height: 10),
-                                buildTextField(
-                                  "Last Name",
-                                  lastNameController,
-                                ),
-                                SizedBox(height: 10),
-                                buildTextField(
-                                  "Mobile Number",
-                                  mobileNumberController,
-                                ),
-                                SizedBox(height: 10),
-                                buildTextField("Email", emailController),
-                                SizedBox(height: 10),
-                                buildTextField(
-                                  "Username",
-                                  usernameController,
-                                ),
-                                SizedBox(height: 10),
-                                buildTextField(
-                                  "Password",
-                                  passwordController,
-                                  isPassword: true,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        FadeInUp(
-                          duration: Duration(milliseconds: 1500),
-                          child: MaterialButton(
-                            onPressed: () {
-                              if (validateForm()) {
-                                // All fields are filled, proceed with your logic
-                                print('Form is valid');
-                                clearErrorMessage();
-                              } else {
-                                // Display an error message
-                                setErrorMessage('Please fill in all fields');
-                              }
-                            },
-                            height: 50,
-                            color: Color.fromARGB(255, 1, 157, 223),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Agree and Continue",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        if (errorMessage.isNotEmpty)
-                          Text(
-                            errorMessage,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
+            child: Text('One-Time Booking'),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              // Navigate to recurring booking page
+              Navigator.pushNamed(context, '/recurring_booking');
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 16), // Adjust padding as needed
+              textStyle: TextStyle(fontSize: 18),
+            ),
+            child: Text('Recurring Booking'),
+          ),
+          SizedBox(height: 16),
+          Text('Featured Stadiums', style: TextStyle(fontSize: 18)),
+          Container(
+            height: 200, // Adjust the height according to your design
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 200,
+                enlargeCenterPage: true,
+                autoPlay: true,
+              ),
+              items: [
+                // Add your featured stadium widgets here
+                FeaturedStadiumWidget(imageUrl: 'https://images.unsplash.com/photo-1595030044556-acfaa61edc0f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                FeaturedStadiumWidget(imageUrl: 'https://images.unsplash.com/photo-1533445299615-650a7b20d913?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                // Add more FeaturedStadiumWidget as needed
               ],
             ),
           ),
@@ -198,52 +56,24 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+}
 
-  bool validateForm() {
-    return firstNameController.text.isNotEmpty &&
-        lastNameController.text.isNotEmpty &&
-        mobileNumberController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        usernameController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty;
-  }
+class FeaturedStadiumWidget extends StatelessWidget {
+  final String imageUrl;
 
-  Widget buildTextField(
-      String hintText,
-      TextEditingController controller, {
-        bool isPassword = false,
-      }) {
+  FeaturedStadiumWidget({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
-      ),
-      child: TextField(
-        controller: controller,
-        obscureText: isPassword,
-        onChanged: (value) {
-          // Clear the error message when any field changes
-          clearErrorMessage();
-        },
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey),
-          border: InputBorder.none,
+        borderRadius: BorderRadius.circular(8),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
         ),
       ),
     );
-  }
-
-  void setErrorMessage(String message) {
-    setState(() {
-      errorMessage = message;
-    });
-  }
-
-  void clearErrorMessage() {
-    setState(() {
-      errorMessage = '';
-    });
   }
 }
