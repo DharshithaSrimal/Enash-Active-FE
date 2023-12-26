@@ -13,18 +13,30 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StadiumInfoPage(),
+      home: StadiumInfoPage(
+        selectedDate: DateTime.now(), // Replace with the selected date from the search page
+        selectedTime: 'Monday: 10:00 AM - 12:00 PM', // Replace with the selected time from the search page
+      ),
     );
   }
 }
 
 class StadiumInfoPage extends StatefulWidget {
+  final DateTime selectedDate;
+  final String selectedTime;
+
+  // Use constructor initializer list for non-constant default values
+  StadiumInfoPage({DateTime? selectedDate, String? selectedTime})
+      : selectedDate = selectedDate ?? DateTime(2023, 1, 1),
+        selectedTime = selectedTime ?? 'Monday: 10:00 AM - 12:00 PM';
+
   @override
   _StadiumInfoPageState createState() => _StadiumInfoPageState();
 }
 
 class _StadiumInfoPageState extends State<StadiumInfoPage> {
   List<bool> _selections = [false, false];
+  List<bool> _courtSelections = [false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -85,21 +97,15 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
                     style: TextStyle(fontSize: 16.0),
                   ),
                   SizedBox(height: 16.0),
-                  Text(
-                    'Available Time Slots:',
+                  const Text(
+                    'Available Courts:',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 8.0),
-                  buildTimeSlotsList([
-                    'Monday: 10:00 AM - 12:00 PM',
-                    'Wednesday: 3:00 PM - 5:00 PM',
-                    'Friday: 6:00 PM - 8:00 PM',
-                    'Saturday: 2:00 PM - 4:00 PM',
-                    'Sunday: 5:00 PM - 7:00 PM',
-                  ]),
+                  buildCourtsList(['Court A', 'Court B', 'Court C', 'Court D']),
                   SizedBox(height: 16.0),
                   Text(
                     'Location:\nYour Stadium Address',
@@ -108,93 +114,105 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
                     ),
                   ),
                   SizedBox(height: 8.0),
+                  // Date and Time Fields
                   Row(
                     children: [
                       Icon(
-                        Icons.phone,
+                        Icons.calendar_today,
                         size: 20.0,
                       ),
                       SizedBox(width: 4.0),
                       Text(
-                        'Phone Number: +1234567890',
+                        'Date: ${widget.selectedDate.toLocal()}'.split(' ')[0],
                         style: TextStyle(
                           fontSize: 16.0,
                         ),
                       ),
                     ],
                   ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time,
+                        size: 20.0,
+                      ),
+                      SizedBox(width: 4.0),
+                      Text(
+                        'Time: ${widget.selectedTime}',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  const Row(
+                    children: [Text('Hourly Rate: ',style: TextStyle(
+                          fontSize: 16.0,
+                        ),)],
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             // Reserve Button
-// Reserve Button
-SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
 
-// Selectable Booking Type
-ToggleButtons(
-  children: [
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text('Recurring Booking'),
-    ),
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text('One-Time Booking'),
-    ),
-  ],
-  isSelected: _selections,
-  onPressed: (int index) {
-    setState(() {
-      // Deselect all buttons
-      for (int i = 0; i < _selections.length; i++) {
-        _selections[i] = i == index;
-      }
-    });
-  },
-),
 
-SizedBox(height: 16.0),
 
-// Reserve Button
-ElevatedButton(
-  onPressed: () {
-    // Navigate to ConfirmBookingPage when Reserve button is pressed
-    _navigateToConfirmBookingPage(context);
-  },
-  style: ElevatedButton.styleFrom(
-    primary: Colors.blue,
-    onPrimary: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8.0),
-    ),
-  ),
-  child: Padding(
-    padding: const EdgeInsets.all(12.0),
-    child: Text(
-      'Reserve',
-      style: TextStyle(
-        fontSize: 18.0,
-      ),
-    ),
-  ),
-),
+            SizedBox(height: 16.0),
+
+            // Reserve Button
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to ConfirmBookingPage when Reserve button is pressed
+                _navigateToConfirmBookingPage(context);
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  'Reserve',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildTimeSlotsList(List<String> timeSlots) {
+  Widget buildCourtsList(List<String> courts) {
     return Wrap(
-      spacing: 8.0,
-      runSpacing: 8.0,
-      children: timeSlots
+      spacing: 16.0, // Adjust spacing between courts
+      runSpacing: 16.0, // Adjust spacing between rows of courts
+      children: courts
+          .asMap()
+          .entries
           .map(
-            (slot) => Chip(
-          label: Text(slot),
-        ),
-      )
+            (entry) => GestureDetector(
+              onTap: () {
+                setState(() {
+                  _courtSelections[entry.key] = !_courtSelections[entry.key];
+                });
+              },
+              child: Chip(
+                label: Text(entry.value),
+                backgroundColor: _courtSelections[entry.key] ? const Color.fromARGB(255, 143, 219, 255) : null,
+                labelPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // Adjust padding
+              ),
+            ),
+          )
           .toList(),
     );
   }
@@ -205,11 +223,21 @@ ElevatedButton(
       MaterialPageRoute(
         builder: (context) => ConfirmBookingPage(
           courtName: 'Badminton Stadium',
-          timeSlot: 'Monday: 10:00 AM - 12:00 PM',
-          courtNo: 'Court 1',
+          timeSlot: widget.selectedTime,
+          courtNo: _getSelectedCourts(),
           price: 'LKR 800.00',
         ),
       ),
     );
+  }
+
+  String _getSelectedCourts() {
+    List<String> selectedCourts = [];
+    for (int i = 0; i < _courtSelections.length; i++) {
+      if (_courtSelections[i]) {
+        selectedCourts.add('Court ${String.fromCharCode(65 + i)}');
+      }
+    }
+    return selectedCourts.join(', ');
   }
 }
