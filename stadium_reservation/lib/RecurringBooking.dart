@@ -324,13 +324,20 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                 // For example, validate input and perform the reservation
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.white,
+                primary: Colors.blue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 minimumSize: Size(double.infinity, 50),
               ),
-              child: Text('Make Reservation'),
+              child: Text(
+                'Make Reservation',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
