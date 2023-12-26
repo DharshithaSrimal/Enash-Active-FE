@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stadium_reservation/searchResults.dart';
 
 class StadiumsSearchPage extends StatefulWidget {
   @override
@@ -97,7 +98,10 @@ class _StadiumsSearchPageState extends State<StadiumsSearchPage> {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  // Implement your search logic here
+                                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => StadiumResultsPage(searchResults: [],)),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
@@ -106,8 +110,14 @@ class _StadiumsSearchPageState extends State<StadiumsSearchPage> {
                   ),
                   minimumSize: Size(double.infinity, 50),
                 ),
-                child: Text('Search'),
-              ),
+              child: const Text(
+                'Search',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),              ),
             ],
           ),
         ),
