@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:stadium_reservation/Landing.dart';
+import 'package:stadium_reservation/stadiumSearch.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -117,21 +119,28 @@ class HomePage extends StatelessWidget {
                       FadeInUp(
                         duration: Duration(milliseconds: 1600),
                         child: MaterialButton(
-                          onPressed: () {},
-                          height: 50,
-                          color: Color.fromARGB(255, 1, 157, 223),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Sign In",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
+  onPressed: () {
+    // Navigate to the search page
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LandingPage()),
+    );
+  },
+  height: 50,
+  color: Color.fromARGB(255, 1, 157, 223),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(50),
+  ),
+  child: Center(
+    child: Text(
+      "Sign In",
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+),
                       ),
                       SizedBox(
                         height: 20,
