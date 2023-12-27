@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'PaymentPage.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -109,7 +111,7 @@ class StadiumInfoPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
                   // Use a Wrap for the time slots to handle scrolling if needed
-                  buildTimeSlotsList([
+                  buildTimeSlotsList(context, [
                     'Monday: 10:00 AM - 12:00 PM',
                     'Wednesday: 3:00 PM - 5:00 PM',
                     'Friday: 6:00 PM - 8:00 PM',
@@ -117,7 +119,6 @@ class StadiumInfoPage extends StatelessWidget {
                     'Sunday: 5:00 PM - 7:00 PM',
                   ]),
                   const SizedBox(height: 16.0)
-
                 ],
               ),
             ),
@@ -128,17 +129,70 @@ class StadiumInfoPage extends StatelessWidget {
   }
 
   // Function to build the list of time slots using Wrap
-  Widget buildTimeSlotsList(List<String> timeSlots) {
+  Widget buildTimeSlotsList(BuildContext context, List<String> timeSlots) {
     return Wrap(
       spacing: 8.0, // Adjust the spacing as needed
       runSpacing: 8.0, // Adjust the run spacing as needed
       children: timeSlots
           .map(
-            (slot) => Chip(
-          label: Text(slot),
+            (slot) => GestureDetector(
+          onTap: () {
+            showBookingConfirmationDialog(context, slot);
+          },
+          child: Chip(
+            label: Text(slot),
+          ),
         ),
       )
           .toList(),
     );
+  }
+
+  // Function to show the booking confirmation dialog
+  void showBookingConfirmationDialog(BuildContext context, String timeSlot) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Booking'),
+          content: Text('Do you want to book the court for $timeSlot?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                navigateToPaymentPage(context, timeSlot);
+              },
+              child: Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Function to navigate to the payment page
+  void navigateToPaymentPage(BuildContext context, String timeSlot) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PaymentPage(
+          stadiumName: 'Badminton Stadium',
+          location: 'Colombo',
+          timeSlot: timeSlot,
+          price: calculatePrice(), // Replace with your pricing logic
+        ),
+      ),
+    );
+  }
+
+  double calculatePrice() {
+    // Replace this with your pricing logic based on the selected time slot and any other factors
+    return 20.0; // Example price
   }
 }
