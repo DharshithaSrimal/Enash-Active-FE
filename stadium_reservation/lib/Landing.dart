@@ -64,7 +64,7 @@ class LandingPage extends StatelessWidget {
               children: [
                 Flexible(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
