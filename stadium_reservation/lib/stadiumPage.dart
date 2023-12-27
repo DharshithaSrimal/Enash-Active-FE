@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'PaymentPage.dart';
+import 'package:stadium_reservation/ConfirmBooking.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,12 +13,31 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StadiumInfoPage(),
+      home: StadiumInfoPage(
+        selectedDate: DateTime.now(), // Replace with the selected date from the search page
+        selectedTime: 'Monday: 10:00 AM - 12:00 PM', // Replace with the selected time from the search page
+      ),
     );
   }
 }
 
-class StadiumInfoPage extends StatelessWidget {
+class StadiumInfoPage extends StatefulWidget {
+  final DateTime selectedDate;
+  final String selectedTime;
+
+  // Use constructor initializer list for non-constant default values
+  StadiumInfoPage({DateTime? selectedDate, String? selectedTime})
+      : selectedDate = selectedDate ?? DateTime(2023, 1, 1),
+        selectedTime = selectedTime ?? 'Monday: 10:00 AM - 12:00 PM';
+
+  @override
+  _StadiumInfoPageState createState() => _StadiumInfoPageState();
+}
+
+class _StadiumInfoPageState extends State<StadiumInfoPage> {
+  List<bool> _selections = [false, false];
+  List<bool> _courtSelections = [false, false, false, false];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,24 +45,24 @@ class StadiumInfoPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 200.0, // Adjust the height as needed
+              height: 200.0,
               width: double.infinity,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    'https://picsum.photos/seed/picsum/800/200', // Placeholder image URL
+                    'https://sportsvenuecalculator.com/wp-content/uploads/2022/06/2-1.jpg',
                   ),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
@@ -63,7 +81,7 @@ class StadiumInfoPage extends StatelessWidget {
                           ),
                           SizedBox(width: 4.0),
                           Text(
-                            '4.5', // Replace with your stadium rating
+                            '4.5',
                             style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
@@ -73,53 +91,99 @@ class StadiumInfoPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8.0),
+                  SizedBox(height: 8.0),
+                  Text(
+                    'Description:\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  SizedBox(height: 16.0),
                   const Text(
-                    'Location: Colombo', // Add your stadium location here
+                    'Available Courts:',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  buildCourtsList(['Court A', 'Court B', 'Court C', 'Court D']),
+                  SizedBox(height: 16.0),
+                  Text(
+                    'Location:\nYour Stadium Address',
                     style: TextStyle(
                       fontSize: 16.0,
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  const Row(
+                  SizedBox(height: 8.0),
+                  // Date and Time Fields
+                  Row(
                     children: [
                       Icon(
-                        Icons.phone,
+                        Icons.calendar_today,
                         size: 20.0,
                       ),
                       SizedBox(width: 4.0),
                       Text(
-                        ': +1234567890', // Add your stadium phone number here
+                        'Date: ${widget.selectedDate.toLocal()}'.split(' ')[0],
                         style: TextStyle(
                           fontSize: 16.0,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 18.0),
-                  const Text(
-                    'Description:\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                    style: TextStyle(fontSize: 16.0),
+                  SizedBox(height: 8.0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time,
+                        size: 20.0,
+                      ),
+                      SizedBox(width: 4.0),
+                      Text(
+                        'Time: ${widget.selectedTime}',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16.0),
-                  const Text(
-                    'Available Time Slots:',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  // Use a Wrap for the time slots to handle scrolling if needed
-                  buildTimeSlotsList(context, [
-                    'Monday: 10:00 AM - 12:00 PM',
-                    'Wednesday: 3:00 PM - 5:00 PM',
-                    'Friday: 6:00 PM - 8:00 PM',
-                    'Saturday: 2:00 PM - 4:00 PM',
-                    'Sunday: 5:00 PM - 7:00 PM',
-                  ]),
-                  const SizedBox(height: 16.0)
+                  SizedBox(height: 8.0),
+                  const Row(
+                    children: [Text('Hourly Rate: ',style: TextStyle(
+                          fontSize: 16.0,
+                        ),)],
+                  )
                 ],
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            // Reserve Button
+            const SizedBox(height: 16.0),
+
+
+
+            SizedBox(height: 16.0),
+
+            // Reserve Button
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to ConfirmBookingPage when Reserve button is pressed
+                _navigateToConfirmBookingPage(context);
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  'Reserve',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
               ),
             ),
           ],
@@ -128,71 +192,52 @@ class StadiumInfoPage extends StatelessWidget {
     );
   }
 
-  // Function to build the list of time slots using Wrap
-  Widget buildTimeSlotsList(BuildContext context, List<String> timeSlots) {
+  Widget buildCourtsList(List<String> courts) {
     return Wrap(
-      spacing: 8.0, // Adjust the spacing as needed
-      runSpacing: 8.0, // Adjust the run spacing as needed
-      children: timeSlots
+      spacing: 16.0, // Adjust spacing between courts
+      runSpacing: 16.0, // Adjust spacing between rows of courts
+      children: courts
+          .asMap()
+          .entries
           .map(
-            (slot) => GestureDetector(
-          onTap: () {
-            showBookingConfirmationDialog(context, slot);
-          },
-          child: Chip(
-            label: Text(slot),
-          ),
-        ),
-      )
+            (entry) => GestureDetector(
+              onTap: () {
+                setState(() {
+                  _courtSelections[entry.key] = !_courtSelections[entry.key];
+                });
+              },
+              child: Chip(
+                label: Text(entry.value),
+                backgroundColor: _courtSelections[entry.key] ? const Color.fromARGB(255, 143, 219, 255) : null,
+                labelPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // Adjust padding
+              ),
+            ),
+          )
           .toList(),
     );
   }
 
-  // Function to show the booking confirmation dialog
-  void showBookingConfirmationDialog(BuildContext context, String timeSlot) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm Booking'),
-          content: Text('Do you want to book the court for $timeSlot?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                navigateToPaymentPage(context, timeSlot);
-              },
-              child: Text('Confirm'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Function to navigate to the payment page
-  void navigateToPaymentPage(BuildContext context, String timeSlot) {
+  void _navigateToConfirmBookingPage(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PaymentPage(
-          stadiumName: 'Badminton Stadium',
-          location: 'Colombo',
-          timeSlot: timeSlot,
-          price: calculatePrice(), // Replace with your pricing logic
+        builder: (context) => ConfirmBookingPage(
+          courtName: 'Badminton Stadium',
+          timeSlot: widget.selectedTime,
+          courtNo: _getSelectedCourts(),
+          price: 'LKR 800.00',
         ),
       ),
     );
   }
 
-  double calculatePrice() {
-    // Replace this with your pricing logic based on the selected time slot and any other factors
-    return 20.0; // Example price
+  String _getSelectedCourts() {
+    List<String> selectedCourts = [];
+    for (int i = 0; i < _courtSelections.length; i++) {
+      if (_courtSelections[i]) {
+        selectedCourts.add('Court ${String.fromCharCode(65 + i)}');
+      }
+    }
+    return selectedCourts.join(', ');
   }
 }

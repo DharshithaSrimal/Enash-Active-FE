@@ -1,150 +1,125 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stadium_reservation/searchResults.dart';
 
-void main() => runApp(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: StadiumSearchPage(),
-      ),
-    );
-
-class StadiumSearchPage extends StatefulWidget {
+class StadiumsSearchPage extends StatefulWidget {
   @override
-  _StadiumSearchPageState createState() => _StadiumSearchPageState();
+  _StadiumsSearchPageState createState() => _StadiumsSearchPageState();
 }
 
-class _StadiumSearchPageState extends State<StadiumSearchPage> {
-  String? selectedSportType;
-  String? selectedDistrict;
-  String? selectedCity;
-  DateTime selectedDate = DateTime.now();
+class _StadiumsSearchPageState extends State<StadiumsSearchPage> {
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedStartTime;
+  TimeOfDay? _selectedEndTime;
+  String? _selectedDistrict;
+  String? _selectedCity;
 
-  TextEditingController _calendarController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _startTimeController = TextEditingController();
+  TextEditingController _endTimeController = TextEditingController();
+
+  List<String> districts = ['District A', 'District B', 'District C'];
+  List<String> cities = ['City X', 'City Y', 'City Z'];
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year + 5),
+    );
+
+    if (selectedDate != null) {
+      setState(() {
+        _selectedDate = selectedDate;
+        _dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+      });
+    }
+  }
+
+  Future<void> _selectTime(BuildContext context, bool isStartTime) async {
+    TimeOfDay? selectedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (selectedTime != null) {
+      setState(() {
+        if (isStartTime) {
+          _selectedStartTime = selectedTime;
+          _startTimeController.text = selectedTime.format(context);
+        } else {
+          _selectedEndTime = selectedTime;
+          _endTimeController.text = selectedTime.format(context);
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Find Your Nearest Badminton Court'),
+      ),
       body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                colors: [Colors.black, Colors.grey.shade900, Colors.grey.shade800])),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 40),
-            const Padding(
-              padding: EdgeInsets.all(20),
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "ENASH ACTIVE",
-                      style: TextStyle(color: Colors.white, fontSize: 40),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
-                        topRight: Radius.circular(60))),
-                child: Padding(
-                  padding: EdgeInsets.all(30),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color.fromRGBO(225, 95, 27, .3),
-                                  blurRadius: 20,
-                                  offset: Offset(0, 10))
-                            ]),
-                        child: Column(
-                          children: <Widget>[
-                            buildDropdownButton(
-                              "Sport Type",
-                              sportsTypes,
-                              selectedSportType,
-                              (String? value) {
-                                setState(() {
-                                  selectedSportType = value;
-                                });
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            buildTextFormField("Calendar", _calendarController),
-                            SizedBox(height: 10),
-                            buildDropdownButton(
-                              "District",
-                              districts,
-                              selectedDistrict,
-                              (String? value) {
-                                setState(() {
-                                  selectedDistrict = value;
-                                });
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            buildDropdownButton(
-                              "City",
-                              cities,
-                              selectedCity,
-                              (String? value) {
-                                setState(() {
-                                  selectedCity = value;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      MaterialButton(
-                        onPressed: () {
-                          _showAvailableStadiumsDialog(context);
-                        },
-                        height: 50,
-                        color: Color.fromARGB(255, 1, 157, 223),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Show Available Stadiums",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
+        color: Colors.white10, // Light blue background color
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              buildTextFormField("Date", _dateController, () => _selectDate(context)),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: buildTextFormField("Start Time", _startTimeController, () => _selectTime(context, true)),
                   ),
-                ),
+                  SizedBox(width: 16),
+                  Flexible(
+                    child: buildTextFormField("End Time", _endTimeController, () => _selectTime(context, false)),
+                  ),
+                ],
               ),
-            )
-          ],
+              SizedBox(height: 20),
+              buildDropdownButton("District", districts, _selectedDistrict, (String? value) {
+                setState(() {
+                  _selectedDistrict = value;
+                });
+              }),
+              SizedBox(height: 20),
+              buildDropdownButton("City", cities, _selectedCity, (String? value) {
+                setState(() {
+                  _selectedCity = value;
+                });
+              }),
+              SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => StadiumResultsPage(searchResults: [],)),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  minimumSize: Size(double.infinity, 50),
+                ),
+              child: const Text(
+                'Search',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),              ),
+            ],
+          ),
         ),
       ),
     );
@@ -157,11 +132,12 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     void Function(String?)? onChanged,
   ) {
     return Container(
-      width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 8),
       padding: EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey.shade200))),
+        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: DropdownButton<String>(
         hint: Text(hintText),
         value: value,
@@ -181,64 +157,37 @@ class _StadiumSearchPageState extends State<StadiumSearchPage> {
     );
   }
 
-  Widget buildTextFormField(String hintText, TextEditingController controller) {
+  Widget buildTextFormField(String hintText, TextEditingController controller, VoidCallback onTap) {
     return Container(
-      width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 8),
       padding: EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey.shade200))),
+        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey),
           border: InputBorder.none,
+          suffixIcon: InkWell(
+            onTap: onTap,
+            child: Icon(Icons.calendar_today),
+          ),
         ),
-        onTap: () => _selectDate(context),
+        onTap: onTap,
         readOnly: true,
       ),
     );
   }
+}
 
-  void _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (pickedDate != null && pickedDate != selectedDate) {
-      setState(() {
-        selectedDate = pickedDate;
-        _calendarController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-      });
-    }
-  }
-
-  void _showAvailableStadiumsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Available Stadiumz"),
-          content: Text("Display the list of available stadiums here."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Sample data for dropdowns
-  List<String> sportsTypes = ['Badminton', 'Basketball', 'Tennis', 'Indoor Cricket'];
-  List<String> districts = ['Colombo', 'Kandy', 'Galle'];
-  List<String> cities = ['City A', 'City B', 'City C'];
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: StadiumsSearchPage(),
+    ),
+  );
 }
