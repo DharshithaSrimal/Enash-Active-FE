@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stadium_reservation/ConfirmBooking.dart';
 
+import 'PaymentPage.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -92,14 +94,21 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+<<<<<<< Updated upstream
                   SizedBox(height: 8.0),
                   buildTimeSlotsList([
+=======
+                  const SizedBox(height: 8.0),
+                  // Use a Wrap for the time slots to handle scrolling if needed
+                  buildTimeSlotsList(context, [
+>>>>>>> Stashed changes
                     'Monday: 10:00 AM - 12:00 PM',
                     'Wednesday: 3:00 PM - 5:00 PM',
                     'Friday: 6:00 PM - 8:00 PM',
                     'Saturday: 2:00 PM - 4:00 PM',
                     'Sunday: 5:00 PM - 7:00 PM',
                   ]),
+<<<<<<< Updated upstream
                   SizedBox(height: 16.0),
                   Text(
                     'Location:\nYour Stadium Address',
@@ -123,6 +132,9 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
                       ),
                     ],
                   ),
+=======
+                  const SizedBox(height: 16.0)
+>>>>>>> Stashed changes
                 ],
               ),
             ),
@@ -185,20 +197,31 @@ ElevatedButton(
     );
   }
 
+<<<<<<< Updated upstream
   Widget buildTimeSlotsList(List<String> timeSlots) {
+=======
+  // Function to build the list of time slots using Wrap
+  Widget buildTimeSlotsList(BuildContext context, List<String> timeSlots) {
+>>>>>>> Stashed changes
     return Wrap(
       spacing: 8.0,
       runSpacing: 8.0,
       children: timeSlots
           .map(
-            (slot) => Chip(
-          label: Text(slot),
+            (slot) => GestureDetector(
+          onTap: () {
+            showBookingConfirmationDialog(context, slot);
+          },
+          child: Chip(
+            label: Text(slot),
+          ),
         ),
       )
           .toList(),
     );
   }
 
+<<<<<<< Updated upstream
   void _navigateToConfirmBookingPage(BuildContext context) {
     Navigator.push(
       context,
@@ -208,8 +231,57 @@ ElevatedButton(
           timeSlot: 'Monday: 10:00 AM - 12:00 PM',
           courtNo: 'Court 1',
           price: 'LKR 800.00',
+=======
+  // Function to show the booking confirmation dialog
+  void showBookingConfirmationDialog(BuildContext context, String timeSlot) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Booking'),
+          content: Text('Do you want to book the court for $timeSlot?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                navigateToPaymentPage(context, timeSlot);
+              },
+              child: Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Function to navigate to the payment page
+  void navigateToPaymentPage(BuildContext context, String timeSlot) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PaymentPage(
+          stadiumName: 'Badminton Stadium',
+          location: 'Colombo',
+          timeSlot: timeSlot,
+          price: calculatePrice(), // Replace with your pricing logic
+>>>>>>> Stashed changes
         ),
       ),
     );
   }
+<<<<<<< Updated upstream
 }
+=======
+
+  double calculatePrice() {
+    // Replace this with your pricing logic based on the selected time slot and any other factors
+    return 20.0; // Example price
+  }
+}
+>>>>>>> Stashed changes
