@@ -16,13 +16,13 @@ class Stadium {
 class StadiumResultsPage extends StatelessWidget {
   final List<Stadium> searchResults;
 
-  StadiumResultsPage({required this.searchResults});
+  const StadiumResultsPage({required this.searchResults});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Stadium Search Results'),
+        title: const Text('Stadium Search Results'),
       ),
       body: ListView.builder(
         itemCount: searchResults.length,

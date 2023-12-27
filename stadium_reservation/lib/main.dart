@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:stadium_reservation/Landing.dart';
 import 'package:stadium_reservation/stadiumSearch.dart';
 
 void main() => runApp(
@@ -122,7 +123,7 @@ class HomePage extends StatelessWidget {
     // Navigate to the search page
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => StadiumSearchPage()),
+      MaterialPageRoute(builder: (context) => LandingPage()),
     );
   },
   height: 50,
