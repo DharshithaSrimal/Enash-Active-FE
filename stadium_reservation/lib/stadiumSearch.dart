@@ -98,9 +98,11 @@ class _StadiumsSearchPageState extends State<StadiumsSearchPage> {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                                    Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => StadiumResultsPage(searchResults: [],)),
+                    MaterialPageRoute(
+                      builder: (context) => StadiumResultsPage(searchResults: []),
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -110,14 +112,15 @@ class _StadiumsSearchPageState extends State<StadiumsSearchPage> {
                   ),
                   minimumSize: Size(double.infinity, 50),
                 ),
-              child: const Text(
-                'Search',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
+                child: const Text(
+                  'Search',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
-              ),              ),
+              ),
             ],
           ),
         ),
@@ -126,11 +129,11 @@ class _StadiumsSearchPageState extends State<StadiumsSearchPage> {
   }
 
   Widget buildDropdownButton(
-    String hintText,
-    List<String> items,
-    String? value,
-    void Function(String?)? onChanged,
-  ) {
+      String hintText,
+      List<String> items,
+      String? value,
+      void Function(String?)? onChanged,
+      ) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8),
       padding: EdgeInsets.symmetric(horizontal: 20),
