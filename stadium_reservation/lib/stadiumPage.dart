@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:stadium_reservation/ConfirmBooking.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -14,8 +18,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: StadiumInfoPage(
-        selectedDate: DateTime.now(), // Replace with the selected date from the search page
-        selectedTime: 'Monday: 10:00 AM - 12:00 PM', // Replace with the selected time from the search page
+        selectedDate: DateTime
+            .now(), // Replace with the selected date from the search page
+        selectedTime:
+            'Monday: 10:00 AM - 12:00 PM', // Replace with the selected time from the search page
       ),
     );
   }
@@ -148,9 +154,14 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
                   ),
                   SizedBox(height: 8.0),
                   const Row(
-                    children: [Text('Hourly Rate: ',style: TextStyle(
+                    children: [
+                      Text(
+                        'Hourly Rate: ',
+                        style: TextStyle(
                           fontSize: 16.0,
-                        ),)],
+                        ),
+                      )
+                    ],
                   )
                 ],
               ),
@@ -158,8 +169,6 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
             const SizedBox(height: 16.0),
             // Reserve Button
             const SizedBox(height: 16.0),
-
-
 
             SizedBox(height: 16.0),
 
@@ -208,8 +217,11 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
               },
               child: Chip(
                 label: Text(entry.value),
-                backgroundColor: _courtSelections[entry.key] ? const Color.fromARGB(255, 143, 219, 255) : null,
-                labelPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // Adjust padding
+                backgroundColor: _courtSelections[entry.key]
+                    ? const Color.fromARGB(255, 143, 219, 255)
+                    : null,
+                labelPadding: EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 12.0), // Adjust padding
               ),
             ),
           )
@@ -239,5 +251,17 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
       }
     }
     return selectedCourts.join(', ');
+  }
+
+  void fetchStadiums() {
+    const stadiumEndpoint = ''; // API Endpoint
+    final uri = Uri.parse(uri);
+    final stadiumResponse = await http.get(uri);
+    final body = stadiumResponse.body;
+    final json = jsonDecode(body);
+    //handle the json to get the results
+    // setState((){
+    //   stadiums = json['results'];
+    // });
   }
 }
