@@ -18,25 +18,38 @@ class ConfirmBookingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Confirm Booking'),
+        backgroundColor: Colors.blueGrey,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Court Name: $courtName',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            Card(
+              color: Colors.grey[200],
+              child: ListTile(
+                leading: Icon(Icons.sports_tennis, color: Colors.blueGrey),
+                title: Text('Court Name'),
+                subtitle: Text(courtName),
+              ),
             ),
             SizedBox(height: 8.0),
-            Text(
-              'Time Slot: $timeSlot',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            Card(
+              color: Colors.grey[200],
+              child: ListTile(
+                leading: Icon(Icons.access_time, color: Colors.blueGrey),
+                title: Text('Time Slot'),
+                subtitle: Text(timeSlot),
+              ),
             ),
             SizedBox(height: 8.0),
-            Text(
-              'Price: $price',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            Card(
+              color: Colors.grey[200],
+              child: ListTile(
+                leading: Icon(Icons.attach_money, color: Colors.blueGrey),
+                title: Text('Price'),
+                subtitle: Text(price),
+              ),
             ),
             SizedBox(height: 16.0),
             // Proceed to Payment Button
@@ -46,14 +59,14 @@ class ConfirmBookingPage extends StatelessWidget {
                 _navigateToPaymentPage(context);
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
+                primary: Colors.blueGrey,
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
+              child: const Padding(
+                padding: EdgeInsets.all(12.0),
                 child: Text(
                   'Proceed to Payment',
                   style: TextStyle(

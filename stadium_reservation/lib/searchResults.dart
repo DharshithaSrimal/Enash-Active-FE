@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stadium_reservation/stadiumPage.dart' as stadium;
+import 'package:stadium_reservation/stadiumPage.dart';
 
-class Stadium {
-  final String name;
-  final String imageUrl;
-  final String details;
+import 'Stadium.dart';
 
-  Stadium({
-    required this.name,
-    required this.imageUrl,
-    required this.details,
-  });
-}
+
 
 class StadiumResultsPage extends StatelessWidget {
   final List<Stadium> searchResults;
@@ -29,45 +23,57 @@ class StadiumResultsPage extends StatelessWidget {
         itemCount: searchResults.length,
         itemBuilder: (context, index) {
           Stadium stadium = searchResults[index];
-          return Card(
-            margin: EdgeInsets.all(8.0),
-            child: ListTile(
-              contentPadding: EdgeInsets.all(25.0),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    _navigateToStadiumInfoPage(context, stadium);
-                  },
-                  child: Image.network(
-                    stadium.imageUrl,
-                    width: 250.0,
-                    height: 240.0,
-                    fit: BoxFit.cover,
+          return InkWell(
+            onTap: () {
+              _navigateToStadiumInfoPage(context, stadium);
+            },
+            child: Card(
+              margin: EdgeInsets.all(10.0),
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Row(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      stadium.imageUrl,
+                      width: 120.0,
+                      height: 120.0,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-              ),
-              title: GestureDetector(
-                onTap: () {
-                  _navigateToStadiumInfoPage(context, stadium);
-                },
-                child: Text(
-                  stadium.name,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            stadium.name,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                          SizedBox(height: 10.0),
+                          Text(
+                            stadium.details,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-              subtitle: Text(
-                stadium.details,
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-              onTap: () {
-                _navigateToStadiumInfoPage(context, stadium);
-              },
             ),
           );
         },
@@ -80,54 +86,13 @@ class StadiumResultsPage extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => StadiumInfoPage(stadium: stadium),
+        builder: (context) => StadiumInfoPage(imageUrl: stadium.imageUrl, name: stadium.name,),
       ),
     );
   }
 }
 
-class StadiumInfoPage extends StatelessWidget {
-  final Stadium stadium;
 
-  const StadiumInfoPage({required this.stadium});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Stadium Details'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.network(
-              stadium.imageUrl,
-              width: 250.0,
-              height: 240.0,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(height: 20),
-            Text(
-              stadium.name,
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              stadium.details,
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 void main() {
   runApp(

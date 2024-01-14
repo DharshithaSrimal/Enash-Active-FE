@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stadium_reservation/searchResults.dart';
 
+import 'Stadium.dart';
+
 class StadiumsSearchPage extends StatefulWidget {
   @override
   _StadiumsSearchPageState createState() => _StadiumsSearchPageState();
@@ -56,6 +58,63 @@ class _StadiumsSearchPageState extends State<StadiumsSearchPage> {
     }
   }
 
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _searchStadiums() {
+    if (_selectedDate == null ||
+        _selectedStartTime == null ||
+        _selectedEndTime == null ||
+        _selectedDistrict == null ||
+        _selectedCity == null) {
+      _showErrorDialog(context, "All fields must be filled.");
+    } else {
+      // Perform the search logic
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => StadiumResultsPage(searchResults: [
+            Stadium(
+              name: 'Stadium 1',
+              imageUrl:
+              'https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YmFkbWludG9uJTIwY291cnR8ZW58MHx8MHx8fDA%3D',
+              details: 'City X, District A, Date: 2024-01-06, Time: 12:00 PM - 3:00 PM',
+            ),
+            Stadium(
+              name: 'Stadium 2',
+              imageUrl:
+              'https://images.unsplash.com/photo-1611630483685-472d017cbb4f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+              details: 'City X, District A, Date: 2024-01-06, Time: 2:00 PM - 5:00 PM',
+            ),
+            Stadium(
+              name: 'Stadium 3',
+              imageUrl:
+              'https://images.unsplash.com/photo-1626926938421-90124a4b83fa?q=80&w=1951&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+              details: 'City C, District B, Date: 2024-12-03, Time: 4:00 PM - 7:00 PM',
+            ),
+          ]),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,14 +156,7 @@ class _StadiumsSearchPageState extends State<StadiumsSearchPage> {
               }),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => StadiumResultsPage(searchResults: []),
-                    ),
-                  );
-                },
+                onPressed: _searchStadiums,
                 style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
                   shape: RoundedRectangleBorder(
