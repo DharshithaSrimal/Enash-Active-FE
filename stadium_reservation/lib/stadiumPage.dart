@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:stadium_reservation/ConfirmBooking.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'PaymentPage.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Badminton Stadium Info',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: StadiumInfoPage(),
-    );
-  }
-}
 
 class StadiumInfoPage extends StatefulWidget {
+  final DateTime selectedDate;
+  final String selectedTime;
+
+
+  var imageUrl;
+
+  var name;
+
+  // Use constructor initializer list for non-constant default values
+  StadiumInfoPage({
+    Key? key,
+    DateTime? selectedDate,
+    String? selectedTime,
+    required this.imageUrl, // Add this
+    required this.name, // Add this
+  })  : selectedDate = selectedDate ?? DateTime(2023, 1, 1),
+        selectedTime = selectedTime ?? 'Monday: 10:00 AM - 12:00 PM',
+        super(key: key);
+
   @override
   _StadiumInfoPageState createState() => _StadiumInfoPageState();
 }
 
 class _StadiumInfoPageState extends State<StadiumInfoPage> {
   List<bool> _selections = [false, false];
+  List<bool> _courtSelections = [false, false, false, false];
+  var courtName = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,31 +44,45 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
               height: 200.0,
               width: double.infinity,
               decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black],
+                ),
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://sportsvenuecalculator.com/wp-content/uploads/2022/06/2-1.jpg',
-                  ),
+                  image: NetworkImage(widget.imageUrl),
                   fit: BoxFit.cover,
                 ),
               ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  widget.name,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Badminton Stadium',
+            Card(
+              margin: EdgeInsets.all(16.0),
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      title: Text(
+                        widget.name,
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Row(
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.star,
@@ -77,124 +99,113 @@ class _StadiumInfoPageState extends State<StadiumInfoPage> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    'Description:\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Available Time Slots:',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  buildTimeSlotsList([
-                    'Monday: 10:00 AM - 12:00 PM',
-                    'Wednesday: 3:00 PM - 5:00 PM',
-                    'Friday: 6:00 PM - 8:00 PM',
-                    'Saturday: 2:00 PM - 4:00 PM',
-                    'Sunday: 5:00 PM - 7:00 PM',
-                  ]),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Location:\nYour Stadium Address',
-                    style: TextStyle(
+                    Divider(),
+                    SizedBox(height: 8.0),
+                    Text(
+                      'Description:\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Available Courts:',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    buildCourtsList(['Court A', 'Court B', 'Court C', 'Court D']),
+                    SizedBox(height: 16.0),
+                    Divider(),
+                    Text(
+                      'Location:\nYour Stadium Address',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    // Date and Time Fields
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 20.0,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text(
+                          'Date: ${widget.selectedDate.toLocal()}'.split(' ')[0],
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.access_time,
+                          size: 20.0,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text(
+                          'Time: ${widget.selectedTime}',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.0),
+                    Divider(),
+                    Text('Hourly Rate: ',style: TextStyle(
                       fontSize: 16.0,
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.phone,
-                        size: 20.0,
-                      ),
-                      SizedBox(width: 4.0),
-                      Text(
-                        'Phone Number: +1234567890',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 16.0),
             // Reserve Button
-// Reserve Button
-SizedBox(height: 16.0),
-
-// Selectable Booking Type
-ToggleButtons(
-  children: [
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text('Recurring Booking'),
-    ),
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text('One-Time Booking'),
-    ),
-  ],
-  isSelected: _selections,
-  onPressed: (int index) {
-    setState(() {
-      // Deselect all buttons
-      for (int i = 0; i < _selections.length; i++) {
-        _selections[i] = i == index;
-      }
-    });
-  },
-),
-
-SizedBox(height: 16.0),
-
-// Reserve Button
-ElevatedButton(
-  onPressed: () {
-    // Navigate to ConfirmBookingPage when Reserve button is pressed
-    _navigateToConfirmBookingPage(context);
-  },
-  style: ElevatedButton.styleFrom(
-    primary: Colors.blue,
-    onPrimary: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8.0),
-    ),
-  ),
-  child: Padding(
-    padding: const EdgeInsets.all(12.0),
-    child: Text(
-      'Reserve',
-      style: TextStyle(
-        fontSize: 18.0,
-      ),
-    ),
-  ),
-),
-          ],
+            FloatingActionButton.extended(
+              onPressed: () {
+                // Navigate to ConfirmBookingPage when Reserve button is pressed
+                _navigateToConfirmBookingPage(context);
+              },
+              icon: Icon(Icons.calendar_today), // Your icon here
+              label: Text('Reserve'),
+              backgroundColor: Colors.deepOrange,
+            ),          ],
         ),
       ),
     );
   }
-
-  Widget buildTimeSlotsList(List<String> timeSlots) {
+  Widget buildCourtsList(List<String> courts) {
     return Wrap(
-      spacing: 8.0,
-      runSpacing: 8.0,
-      children: timeSlots
+      spacing: 16.0, // Adjust spacing between courts
+      runSpacing: 16.0, // Adjust spacing between rows of courts
+      children: courts
+          .asMap()
+          .entries
           .map(
-            (slot) => Chip(
-          label: Text(slot),
-        ),
-      )
+            (entry) => GestureDetector(
+              onTap: () {
+                setState(() {
+                  _courtSelections[entry.key] = !_courtSelections[entry.key];
+                });
+
+
+                courtName.add(entry.value);
+              },
+              child: Chip(
+                label: Text(entry.value),
+                backgroundColor: _courtSelections[entry.key] ? const Color.fromARGB(255, 143, 219, 255) : null,
+                labelPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // Adjust padding
+              ),
+            ),
+          )
           .toList(),
     );
   }
@@ -203,13 +214,23 @@ ElevatedButton(
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ConfirmBookingPage(
-          courtName: 'Badminton Stadium',
-          timeSlot: 'Monday: 10:00 AM - 12:00 PM',
-          courtNo: 'Court 1',
-          price: 'LKR 800.00',
+        builder: (context) => PaymentPage(
+          stadiumName: 'Badminton Stadium', // Pass relevant data to PaymentPage
+          location: 'Your Stadium Address', // Pass relevant data to PaymentPage
+          timeSlot: widget.selectedTime, // Pass relevant data to PaymentPage
+          price: 800.0, court: courtName, // Pass relevant data to PaymentPage
         ),
       ),
     );
+  }
+
+  String _getSelectedCourts() {
+    List<String> selectedCourts = [];
+    for (int i = 0; i < _courtSelections.length; i++) {
+      if (_courtSelections[i]) {
+        selectedCourts.add('Court ${String.fromCharCode(65 + i)}');
+      }
+    }
+    return selectedCourts.join(', ');
   }
 }

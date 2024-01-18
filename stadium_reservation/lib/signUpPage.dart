@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:stadium_reservation/Landing.dart' as landing;
 
 void main() => runApp(
   MaterialApp(
@@ -151,10 +152,20 @@ class _SignUpPageState extends State<SignUpPage> {
                           duration: Duration(milliseconds: 1500),
                           child: MaterialButton(
                             onPressed: () {
-                              if (validateForm()) {
+                              if(!validateEmail(emailController.text)){
+                                setErrorMessage('Please use correct email address');
+                              }
+                              else if (!validateMobile(mobileNumberController.text)){
+                                setErrorMessage('Please use correct Phone number');
+                              }
+                              else if (validateForm()) {
                                 // All fields are filled, proceed with your logic
                                 print('Form is valid');
-                                clearErrorMessage();
+                                // Navigate to the landing page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => landing.LandingPage()),
+                                );
                               } else {
                                 // Display an error message
                                 setErrorMessage('Please fill in all fields');
@@ -206,6 +217,8 @@ class _SignUpPageState extends State<SignUpPage> {
         emailController.text.isNotEmpty &&
         usernameController.text.isNotEmpty &&
         passwordController.text.isNotEmpty;
+
+
   }
 
   Widget buildTextField(
@@ -245,5 +258,14 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       errorMessage = '';
     });
+  }
+
+  bool validateEmail(String value) {
+    return value.contains('@');
+  }
+
+  bool validateMobile(String value) {
+    return value.replaceAll(RegExp(r'\D'), '').length == 10;
+
   }
 }
