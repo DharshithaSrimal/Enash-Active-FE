@@ -166,7 +166,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                     Navigator.of(context).pop(); // Close the dialog
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
+                    backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -236,7 +236,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
         });
       },
       style: ElevatedButton.styleFrom(
-        primary: isSelected ? Colors.blue : Colors.white,
+        backgroundColor: isSelected ? Colors.blue : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -253,7 +253,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
         print('Selected $label');
       },
       style: ElevatedButton.styleFrom(
-        primary: Colors.white,
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -269,7 +269,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
         Navigator.of(context).pop(); // Close the dialog
       },
       style: ElevatedButton.styleFrom(
-        primary: Colors.white, // Set white color
+        backgroundColor: Colors.white, // Set white color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -316,7 +316,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                         ElevatedButton(
                           onPressed: () => _selectTime(context, true),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
+                            backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -337,7 +337,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                         ElevatedButton(
                           onPressed: () => _selectTime(context, false),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
+                            backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -381,7 +381,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                     child: ElevatedButton(
                       onPressed: () => _selectRecurringPattern('Daily'),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
+                        backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -395,7 +395,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                     child: ElevatedButton(
                       onPressed: () => _selectRecurringPattern('Weekly'),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
+                        backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -409,7 +409,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                     child: ElevatedButton(
                       onPressed: () => _selectRecurringPattern('Monthly'),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
+                        backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -440,7 +440,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                         ElevatedButton(
                           onPressed: () => _selectDate(context, true),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
+                            backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -461,7 +461,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                         ElevatedButton(
                           onPressed: () => _selectDate(context, false),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
+                            backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -484,7 +484,7 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
                   Navigator.pushNamed(context, '/stadiumResults_page');
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  backgroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
