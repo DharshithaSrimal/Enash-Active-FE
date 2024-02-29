@@ -507,8 +507,3 @@ class _RecurringBookingPageState extends State<RecurringBookingPage> {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: RecurringBookingPage(),
-  ));
-}
