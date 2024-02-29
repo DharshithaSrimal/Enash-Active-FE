@@ -59,8 +59,7 @@ class ConfirmBookingPage extends StatelessWidget {
                 _navigateToPaymentPage(context);
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.blueGrey,
-                onPrimary: Colors.white,
+                foregroundColor: Colors.white, backgroundColor: Colors.blueGrey,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
